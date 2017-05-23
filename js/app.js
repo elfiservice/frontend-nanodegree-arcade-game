@@ -18,7 +18,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     if (this.x < 505) {
         this.x +=  (this.speed * dt );
-
+        this.checkCollisions();
     } else {
             this.x = -200;
     }
@@ -31,17 +31,33 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Enemy.prototype.checkCollisions = function(){
+    var enemyTail = this.x;
+    var enemyBeak = this.x + 75;
+    var enemyHeight = this.y;
+    var playerPositionHorizt = player.x;
+    var playerPositionVert = player.y;
+
+    if ( enemyBeak > playerPositionHorizt && enemyTail <= (playerPositionHorizt + 30)){
+        if ( (playerPositionVert == 72 && enemyHeight == 50) || (playerPositionVert == 154 && enemyHeight == 150) || (playerPositionVert == 236 && enemyHeight == 225)) {
+            player.x = 203.5;
+            player.y = 400;
+        }
+
+    }
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function (){
-    this.x = 205;
+    this.x = 203.5;
     this.y = 400;
     this.sprite = "images/char-boy.png";
 };
 
 Player.prototype.update = function(){
-
+    // console.log(this.x, this.y);
 }
 
 Player.prototype.render = function(){
@@ -49,10 +65,15 @@ Player.prototype.render = function(){
 }
 
 Player.prototype.handleInput = function(keyCode){
-    console.log(keyCode);
-    if( keyCode === "up"){
-        this.y -= 81;
 
+    if( keyCode === "up" && this.y > -5){
+        this.y -= 82;
+    } else if (keyCode === "down" && this.y < 400){
+        this.y += 82;
+    } else if (keyCode === "left" && this.x > 3.5) {
+        this.x -= 100;
+    } else if (keyCode === "right" && this.x < 400) {
+        this.x += 100;
     }
 }
 
