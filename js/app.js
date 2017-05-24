@@ -1,7 +1,9 @@
 // Enemies our player must avoid
+// Parameter: x and y, to mark the Start Position and
+// speed to mark how fast he`d be
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+    // Setting start Position and Speed of each Enemy
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -13,17 +15,22 @@ var Enemy = function(x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    /*
+    multiply any movement by the dt parameter
+    which will ensure the game runs at the same speed forall computers.
+
+    when the Enemy stay out off the screen (canvas) on the x position > than 505
+    He back to the start of the canvas with a Random negative number
+
+    If your position is less than 505 He is keep going ahead and
+    checking Collisions with the player, invoking the method checkCollisions()
+    */
     if (this.x < 505) {
         this.x +=  (this.speed * dt );
         this.checkCollisions();
     } else {
-            this.x = -200;
+            this.x = Math.floor((Math.random() * 500) + 100) * -1;
     }
-
-
 };
 
 // Draw the enemy on the screen, required method for game
@@ -31,41 +38,66 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//Checking the collisions with Player, invoked from Enemy`s update method
 Enemy.prototype.checkCollisions = function(){
+    //selecting the point of the contact of the Enemy with the Player
+    //(The Beak until the Tail of Enemy)
     var enemyTail = this.x;
     var enemyBeak = this.x + 75;
     var enemyHeight = this.y;
     var playerPositionHorizt = player.x;
     var playerPositionVert = player.y;
 
+    /*
+        cheking IF the Player toch the Beak or the Tail of the Enemy, being True,
+        cheking IF both are in the same Hight (position vertical)
+        Then, moving the Player to Start Position, He die.
+    */
     if ( enemyBeak > playerPositionHorizt && enemyTail <= (playerPositionHorizt + 30)){
         if ( (playerPositionVert == 72 && enemyHeight == 50) || (playerPositionVert == 154 && enemyHeight == 150) || (playerPositionVert == 236 && enemyHeight == 225)) {
-            player.x = 203.5;
-            player.y = 400;
+            player.startPosition();
         }
 
     }
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/*
+    Player class constructor
+    Sprits the image of the Player and
+    Invoke the Start Position of the Player into the canvas
+*/
 var Player = function (){
-    this.x = 203.5;
-    this.y = 400;
+    this.startPosition();
     this.sprite = "images/char-boy.png";
 };
-
-Player.prototype.update = function(){
-    // console.log(this.x, this.y);
+/*
+    Marking the Start Position of the Player
+*/
+Player.prototype.startPosition = function (){
+    this.x = 203.5;
+    this.y = 400;
 }
-
+/*
+    Cheking IF the Player Arrived on the Water in the Canvas game, He Win!
+    Then, he is back to the Start Position after 500ms
+*/
+Player.prototype.update = function(){
+    if( this.y === -10) {
+        setTimeout(function(){ player.startPosition(); }, 500);
+    }
+}
+/*
+    Draw the Player on the screen
+*/
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
-
+/*
+    Receiving the pressed key and moving the Player on the Canvas
+    Parameter: keyCode, indicate Which direction the Player have to go
+    (up, down, left or right)
+*/
 Player.prototype.handleInput = function(keyCode){
-
     if( keyCode === "up" && this.y > -5){
         this.y -= 82;
     } else if (keyCode === "down" && this.y < 400){
@@ -77,18 +109,17 @@ Player.prototype.handleInput = function(keyCode){
     }
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// instantiate objects
+// Enemy objects in an array called allEnemies
 var allEnemies = [
     new Enemy(0,50, 50),
     new Enemy(-250,150, 100),
     new Enemy(-100,225, 80),
-    new Enemy(-200,50, 150),
-    new Enemy(-550,150, 60),
-    new Enemy(-1000,225, 180)
+    new Enemy(-200,50, 350),
+    new Enemy(-550,150, 160),
+    new Enemy(-1000,225, 280)
 ];
-
+// Player object in a variable called player
 var player = new Player();
 
 
