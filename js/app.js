@@ -29,7 +29,7 @@ Enemy.prototype.update = function(dt) {
         this.x +=  (this.speed * dt );
         this.checkCollisions();
     } else {
-            this.x = Math.floor((Math.random() * 500) + 100) * -1;
+        this.x = Math.floor((Math.random() * 500) + 100) * -1;
     }
 };
 
