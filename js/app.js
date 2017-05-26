@@ -1,3 +1,5 @@
+var TILE_WIDTH = 100;
+var TILE_HEIGHT = 82;
 // Enemies our player must avoid
 // Parameter: x and y, to mark the Start Position and
 // speed to mark how fast he`d be
@@ -76,22 +78,23 @@ var Player = function (){
 Player.prototype.startPosition = function (){
     this.x = 203.5;
     this.y = 400;
-}
+};
 /*
     Cheking IF the Player Arrived on the Water in the Canvas game, He Win!
     Then, he is back to the Start Position after 500ms
 */
 Player.prototype.update = function(){
+    var self = this;
     if( this.y === -10) {
-        setTimeout(function(){ player.startPosition(); }, 500);
+        setTimeout(function(){ self.startPosition(); }, 500);
     }
-}
+};
 /*
     Draw the Player on the screen
 */
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 /*
     Receiving the pressed key and moving the Player on the Canvas
     Parameter: keyCode, indicate Which direction the Player have to go
@@ -99,15 +102,15 @@ Player.prototype.render = function(){
 */
 Player.prototype.handleInput = function(keyCode){
     if( keyCode === "up" && this.y > -5){
-        this.y -= 82;
+        this.y -= TILE_HEIGHT;
     } else if (keyCode === "down" && this.y < 400){
-        this.y += 82;
+        this.y += TILE_HEIGHT;
     } else if (keyCode === "left" && this.x > 3.5) {
-        this.x -= 100;
+        this.x -= TILE_WIDTH;
     } else if (keyCode === "right" && this.x < 400) {
-        this.x += 100;
+        this.x += TILE_WIDTH;
     }
-}
+};
 
 // instantiate objects
 // Enemy objects in an array called allEnemies
