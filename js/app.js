@@ -117,11 +117,13 @@ Player.prototype.handleInput = function(keyCode){
 function Level(){
     this.label = "Level";
     this.number = 1;
+
 }
 
 Level.prototype.render = function(){
-    console.log("iniciado");
-    ctx.fillText(this.label + ": " + this.number, 400, 70);
+    ctx.fillStyle = "white";
+            ctx.font = "20px Arial";
+    ctx.fillText(this.label + ": " + this.number, 400, 80);
 }
 
 
