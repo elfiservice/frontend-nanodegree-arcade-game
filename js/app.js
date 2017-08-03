@@ -94,6 +94,7 @@ Player.prototype.update = function(){
 */
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
 };
 /*
     Receiving the pressed key and moving the Player on the Canvas
@@ -112,6 +113,19 @@ Player.prototype.handleInput = function(keyCode){
     }
 };
 
+//game information
+function Level(){
+    this.label = "Level";
+    this.number = 1;
+}
+
+Level.prototype.render = function(){
+    console.log("iniciado");
+    ctx.fillText(this.label + ": " + this.number, 400, 70);
+}
+
+
+
 // instantiate objects
 // Enemy objects in an array called allEnemies
 var allEnemies = [
@@ -125,6 +139,7 @@ var allEnemies = [
 // Player object in a variable called player
 var player = new Player();
 
+var level = new Level();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
